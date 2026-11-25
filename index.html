@@ -230,7 +230,7 @@ p{margin:0}
     <div class="glass stat"><span>Melhor pontuação</span><b id="best-score">0</b></div>
     <div class="glass stat"><span>Maior sequência</span><b id="best-streak">0</b></div>
   </div>
-  <p class="muted" id="app-version" style="text-align:center;font-size:12px;margin-top:-8px">Versão 24 nov · relógio 15s · v3</p>
+  <p class="muted" id="app-version" style="text-align:center;font-size:12px;margin-top:-8px">Versão 24 nov · sem géneros · v4</p>
 </section>
 
 <!-- PARTY SETUP -->
@@ -432,7 +432,7 @@ const GENRES=[
   {id:'rock',name:'Rock',terms:['rock','classic rock','rock hits']},
   {id:'hard',name:'Hard Rock',terms:['hard rock','hard rock classics','heavy rock']}
 ];
-const genre=()=>GENRES.find(g=>g.id===S.genre)||GENRES[0];
+const genre=()=>GENRES[0]; // genres removed by request: always every style
 function selLabel(pl,gid,artistQ){const p=PLAYLISTS.find(x=>x.id===pl);const g=GENRES.find(x=>x.id===gid)||GENRES[0];
   if(pl==='artist')return (artistQ||'').trim();return (p?p.name:'')+(g.id!=='all'?' · '+g.name:'')}
 const PLAYLISTS=[
@@ -619,7 +619,7 @@ function renderHome(){
   $('playlists').innerHTML=PLAYLISTS.map(p=>`<button class="chip${p.id===S.playlist?' on':''}" data-pl="${p.id}" aria-pressed="${p.id===S.playlist}">${esc(p.name)}</button>`).join('');
   $('artist-field').style.display=S.playlist==='artist'?'flex':'none';
   $('genres').innerHTML=GENRES.map(g=>`<button class="chip${g.id===S.genre?' on':''}" data-gn="${g.id}" aria-pressed="${g.id===S.genre}">${esc(g.name)}</button>`).join('');
-  $('genres').style.display=$('genres-label').style.display=S.playlist==='artist'?'none':'';
+  $('genres').style.display=$('genres-label').style.display='none';S.genre='all';
   renderResume();
 }
 $('playlists').addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(!b)return;S.playlist=b.dataset.pl;store.set('playlist',S.playlist);renderHome();vibrate(8);if(S.playlist==='artist')$('artist-q').focus()});
